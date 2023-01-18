@@ -27,7 +27,7 @@ for branch in $(git branch -r | sed '/origin\/HEAD/d'); do
     let DDIFF=($(date +%s -d $MAINDATE)-$(date +%s -d $CDATE))/86400
     declare -i DIFFCOMMITS=$(git log --oneline $branch..origin/$MAINBRANCHNAME | wc -l)
     # check thresholds
-    if [[ {% for trblock in repodata.thresholds | default(git_remembrall_default_thresholds) %}( $DDIFF -ge {{ trblock.days | int }} -a $DIFFCOMMITS -ge {{ trblock.commits | int }} ){% if not loop.last %} || {% endif %}{%endfor %} ]]; then
+    if [[ {% for trblock in repodata.thresholds | default(git_remembrall_default_thresholds) %}( $DDIFF -ge {{ trblock.days | int }} && $DIFFCOMMITS -ge {{ trblock.commits | int }} ){% if not loop.last %} || {% endif %}{%endfor %} ]]; then
         REPORT=1
         CDATEREL=$(git show --pretty=format:"%cr" $branch | head -1)
         REPORTMSG="The branch $branch has not been updated since $CDATEREL and diverges by $DIFFCOMMITS commits from $MAINBRANCHNAME."
