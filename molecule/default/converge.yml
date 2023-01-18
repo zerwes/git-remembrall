@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: run apt update
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 86400
+    - name: "Include zerwes.git-remembrall"
+      include_role:
+        name: "zerwes.git-remembrall"
