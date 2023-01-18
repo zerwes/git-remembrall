@@ -9,6 +9,14 @@ git_remembrall_default_thresholds:
   - days: 14
     commits: 40
 
+git_remembrall_default_messages:
+  reportmsgthresholds: "The branch $branch has not been updated since $CDATEREL and diverges by $DIFFCOMMITS commits from $MAINBRANCHNAME."
+  reportmsgrelevantfiles: "The branch $branch is missing $RELCOMMITS relevant commits from $MAINBRANCHNAME."
+  mailsubject: "[git $repo] issues on branch $branch"
+  mailbody: "Hello $AMAIL\n\nDetected some issues in the git repo $repo ($GITURL)\n$REPORTMSG\nPlease consider merging the $MAINBRANCHNAME branch into $branch."
+  mailsender: "git@git"
+  textmessage: "[git $repo ($GITURL)] issues on branch $branch\nHello $AMAIL\n\nDetected some issues in the git repo $repo\n$REPORTMSG\nPlease consider merging the $MAINBRANCHNAME branch into $branch."
+
 # example:
 # git_remembrall_repos:
 #   'git-remembrall':
@@ -21,11 +29,8 @@ git_remembrall_default_thresholds:
 #     ignorebranches:[] # list of branches to ignore
 #     gitmailformat: "%ae" # git format placeholder to get the mail for notifications %ae author email vs %ce commiter email
 #     relevantfiles: []  # list of relevant files to check commits on
-#     thresholds:
-#       - days: 20
-#         commits: 20
-#       - days: 14
-#         commits: 40
+#     messages: {}  # see git_remembrall_default_messages
+#     thresholds: []  # see git_remembrall_default_thresholds
 
 git_remembrall_packages:
   - git

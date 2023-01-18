@@ -30,23 +30,24 @@ for branch in $(git branch -r | sed '/origin\/HEAD/d'); do
     if [[ {% for trblock in repodata.thresholds | default(git_remembrall_default_thresholds) %}( $DDIFF -ge {{ trblock.days | int }} && $DIFFCOMMITS -ge {{ trblock.commits | int }} ){% if not loop.last %} || {% endif %}{%endfor %} ]]; then
         REPORT=1
         CDATEREL=$(git show --pretty=format:"%cr" $branch | head -1)
-        REPORTMSG="The branch $branch has not been updated since $CDATEREL and diverges by $DIFFCOMMITS commits from $MAINBRANCHNAME."
+        REPORTMSG="{{ repodata.messages.reportmsgthresholds | default(git_remembrall_default_messages.reportmsgthresholds) }}"
 {% if repodata.relevantfiles is defined and repodata.relevantfiles %}
     else
         # detect unmerged commits on relevant files
         declare -i RELCOMMITS=$(git log --oneline $branch..origin/$MAINBRANCHNAME -- {{ repodata.relevantfiles | join(' ') }} | wc -l)
         if [ $RELCOMMITS -gt 0 ]; then
             REPORT=1
-            REPORTMSG="The branch $branch is missing $RELCOMMITS relevant commits from $MAINBRANCHNAME."
+            REPORTMSG="{{ repodata.messages.reportmsgrelevantfiles | default(git_remembrall_default_messages.reportmsgrelevantfiles) }}"
         fi
 {% endif %}
     fi
     if [ $REPORT -gt 0 ]; then
         if [ $MAILREPORT -gt 0 ]; then
-            echo -e "Hello $AMAIL\n\nDetected some issues in the git repo $repo ($GITURL)\n$REPORTMSG\nPlease consider merging the $MAINBRANCHNAME branch into $branch.\n" \
-                | mailx -a "Content-Type: text/plain; charset=UTF-8" -a FROM:git@git -s "[git $repo] issues on branch $branch" $AMAIL
+            echo -e "{{ repodata.messages.mailbody | default(git_remembrall_default_messages.mailbody) }}\n" \
+                | mailx -a "Content-Type: text/plain; charset=UTF-8" -a "FROM:{{ repodata.messages.mailsender | default(git_remembrall_default_messages.mailsender) }}" \
+                    -s "{{ repodata.messages.mailsubject | default(git_remembrall_default_messages.mailsubject) }}" $AMAIL
         else
-            echo -e "[git $repo] issues on branch $branch\nHello $AMAIL\n\nDetected some issues in the git repo $repo\n$REPORTMSG\nPlease consider merging the $MAINBRANCHNAME branch into $branch.\n"
+            echo -e "{{ repodata.messages.textmessage | default(git_remembrall_default_messages.textmessage) }}\n"
         fi
     fi
 done
