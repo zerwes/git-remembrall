@@ -1,7 +1,6 @@
 ---
 
-#list of repos
-
+# list of repos
 git_remembrall_repos: {}
 
 git_remembrall_default_thresholds:
