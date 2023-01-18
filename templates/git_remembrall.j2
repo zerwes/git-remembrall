@@ -1,0 +1,54 @@
+#jinja2: lstrip_blocks: True
+#! /bin/bash
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4 smartindent nu ft=bash
+
+declare -i MAILREPORT=1
+[ "$1" = "-m" ] && MAILREPORT=0
+
+{% for reponame, repodata in git_remembrall_repos.items() | list %}
+# {{ reponame }}
+cd "{{ repodata.dest }}"
+{% if repodata.update | default(true) | bool %}
+git fetch --prune
+{% endif %}
+MAINBRANCHNAME="{{ repodata.mainbranchname | default('main') }}"
+GITURL=$(git config --local --get remote.origin.url)
+# get the last commit date on $MAINBRANCHNAME
+MAINDATE=$(git show --pretty=format:"%cs" origin/$MAINBRANCHNAME | head -1)
+for branch in $(git branch -r | sed '/origin\/HEAD/d'); do
+    for ignorebranch in $MAINBRANCHNAME {{ repodata.ignorebranches | default([]) | join(' ') }}; do
+        [[ "branch" = "origin/$ignorebranch" ]] && continue
+    done
+    declare -i REPORT=0
+    REPORTMSG=""
+    AMAIL=$(git show --pretty=format:"{{ repodata.gitmailformat | default('%ae') }}" $branch | head -1)
+    AMAIL=${AMAIL,,}
+    CDATE=$(git show --pretty=format:"%cs" $branch | head -1)
+    let DDIFF=($(date +%s -d $MAINDATE)-$(date +%s -d $CDATE))/86400
+    declare -i DIFFCOMMITS=$(git log --oneline $branch..origin/$MAINBRANCHNAME | wc -l)
+    # check thresholds
+    if [[ {% for trblock in repodata.thresholds | default(git_remembrall_default_thresholds) %}( $DDIFF -ge {{ trblock.days | int }} -a $DIFFCOMMITS -ge {{ trblock.commits | int }} ){% if not loop.last %} || {% endif %}{%endfor %} ]]; then
+        REPORT=1
+        CDATEREL=$(git show --pretty=format:"%cr" $branch | head -1)
+        REPORTMSG="The branch $branch has not been updated since $CDATEREL and diverges by $DIFFCOMMITS commits from $MAINBRANCHNAME."
+{% if repodata.relevantfiles is defined and repodata.relevantfiles %}
+    else
+        # detect unmerged commits on relevant files
+        declare -i RELCOMMITS=$(git log --oneline $branch..origin/$MAINBRANCHNAME -- {{ repodata.relevantfiles | join(' ') }} | wc -l)
+        if [ $RELCOMMITS -gt 0 ]; then
+            REPORT=1
+            REPORTMSG="The branch $branch is missing $RELCOMMITS relevant commits from $MAINBRANCHNAME."
+        fi
+{% endif %}
+    fi
+    if [ $REPORT -gt 0 ]; then
+        if [ $MAILREPORT -gt 0 ]; then
+            echo -e "Hello $AMAIL\n\nDetected some issues in the git repo $repo ($GITURL)\n$REPORTMSG\nPlease consider merging the $MAINBRANCHNAME branch into $branch.\n" \
+                | mailx -a "Content-Type: text/plain; charset=UTF-8" -a FROM:git@git -s "[git $repo] issues on branch $branch" $AMAIL
+        else
+            echo -e "[git $repo] issues on branch $branch\nHello $AMAIL\n\nDetected some issues in the git repo $repo\n$REPORTMSG\nPlease consider merging the $MAINBRANCHNAME branch into $branch.\n"
+        fi
+    fi
+done
+# end report for {{ reponame }}
+{% endfor %}
