@@ -6,13 +6,14 @@
   gather_facts: true
   vars:
     git_remembrall_script_path: /usr/local/bin/git_remembrall.sh
-    compare_lines:
-      - "[git  (https://github.com/zerwes/git-remembrall.git)] issues on branch origin/testbranch4check"
-      - "Hello zerwes@users.noreply.github.com"
-      - ""
-      - "Detected some issues in the git repo "
-      - "The branch origin/testbranch4check is missing 3 relevant commits from main."
-      - "Please consider merging the main branch into origin/testbranch4check."
+    compare_lines: [
+            "[git git-remembrall (https://github.com/zerwes/git-remembrall.git)] issues on branch origin/testbranch4check",
+            "Hello zerwes@users.noreply.github.com",
+            "",
+            "Detected some issues in the git repo git-remembrall",
+            "The branch origin/testbranch4check is missing 4 relevant commits from main.",
+            "Please consider merging the main branch into origin/testbranch4check."
+        ]
   tasks:
   - name: check syntax
     ansible.builtin.shell: "bash -v {{ git_remembrall_script_path }}"
