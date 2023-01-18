@@ -12,6 +12,7 @@ cd "{{ repodata.dest }}"
 git fetch --prune
 {% endif %}
 MAINBRANCHNAME="{{ repodata.mainbranchname | default('main') }}"
+REPO="{{ reponame }}"
 GITURL=$(git config --local --get remote.origin.url)
 # get the last commit date on $MAINBRANCHNAME
 MAINDATE=$(git show --pretty=format:"%cs" origin/$MAINBRANCHNAME | head -1)
