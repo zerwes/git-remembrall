@@ -10,7 +10,7 @@
     repo: "{{ item.value.repo }}"
     dest: "{{ item.value.dest }}"
     clone: "{{ item.value.clone | default(true) | bool }}"
-    update: "{{ item.value.update | default(true) | bool }}"
+    update: "{{ item.value.updaterepo | default(true) | bool }}"
     recursive: "{{ item.value.recursive | default(false) | bool }}"
   loop: "{{ git_remembrall_repos | dict2items }}"
 

@@ -15,7 +15,7 @@ git_remembrall_default_thresholds:
 #     repo: 'https://github.com/zerwes/git-remembrall.git'
 #     dest: /var/tmp/git-remembrall
 #     clone: true # default
-#     update: true # default
+#     updaterepo: true # default
 #     recursive: false # default
 #     mainbranchname: main # default
 #     ignorebranches:[] # list of branches to ignore
