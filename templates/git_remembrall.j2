@@ -17,7 +17,7 @@ GITURL=$(git config --local --get remote.origin.url)
 MAINDATE=$(git show --pretty=format:"%cs" origin/$MAINBRANCHNAME | head -1)
 for branch in $(git branch -r | sed '/origin\/HEAD/d'); do
     for ignorebranch in $MAINBRANCHNAME {{ repodata.ignorebranches | default([]) | join(' ') }}; do
-        [[ "branch" = "origin/$ignorebranch" ]] && continue
+        [ "$branch" = "origin/$ignorebranch" ] && continue 2
     done
     declare -i REPORT=0
     REPORTMSG=""
