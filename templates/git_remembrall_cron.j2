@@ -1,0 +1,7 @@
+# {{ ansible_managed }} cron tab for zerwes.gitremembrall
+
+MAILTO="{{ git_remembrall_cron.mailto }}"
+PATH=/usr/local/bin:/usr/bin:/bin
+SHELL=/bin/bash
+
+{{ git_remembrall_cron.crontab }}
