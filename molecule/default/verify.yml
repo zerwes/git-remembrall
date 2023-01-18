@@ -8,10 +8,10 @@
     git_remembrall_script_path: /usr/local/bin/git_remembrall.sh
   tasks:
   - name: check syntax
-    shell: "bash -v {{ git_remembrall_script_path }}"
+    ansible.builtin.shell: "bash -v {{ git_remembrall_script_path }}"
   - name: "run {{ git_remembrall_script_path }}"
-    command: "{{ git_remembrall_script_path }} -m"
+    ansible.builtin.command: "{{ git_remembrall_script_path }} -m"
     register: _git_remembrall_script_out
   - name: debug _git_remembrall_script_out
-    debug:
+    ansible.builtin.debug:
       var: _git_remembrall_script_out
