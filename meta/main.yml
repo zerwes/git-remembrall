@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: git-remembrall
+  namespace: zerwes
+  author: Klaus Zerwes
+  description: install a git repo report script
+  license: GPL-3.0-or-later
+  min_ansible_version: 2.14
+  platforms:
+    - name: debian
+      versions: 11
+  galaxy_tags:
+    - git
+dependencies: []
