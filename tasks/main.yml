@@ -1,0 +1,23 @@
+---
+
+- name: install required packages
+  ansible.builtin.package:
+    name: "{{ git_remembrall_packages }}"
+    state: present
+
+- name: clone repos ...
+  ansible.builtin.git:
+    repo: "{{ item.value.repo }}"
+    dest: "{{ item.value.dest }}"
+    clone: "{{ item.value.clone | default(true) | bool }}"
+    update: "{{ item.value.update | default(true) | bool }}"
+    recursive: "{{ item.value.recursive | default(false) | bool }}"
+  loop: "{{ git_remembrall_repos | dict2items }}"
+
+- name: create git report script
+  ansible.builtin.template:
+    src: git_remembrall.j2
+    dest: "{{ git_remembrall_script_path }}"
+    mode: 0755
+
+...
