@@ -1,0 +1,77 @@
+---
+name: molecule test
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: "10 5 * * 1"
+jobs:
+  ansible-latest:
+    name: latest ansible version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: 'zerwes.git-remembrall'
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install test dependencies.
+        run: pip3 install ansible "molecule[docker,lint]" yamllint ansible-lint
+
+      - name: run molecule tests
+        run: molecule test
+        working-directory: zerwes.git-remembrall
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          molecule_skip_rebuild_all: true
+  ansible-pinned:
+    name: pinned ansible version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: 'zerwes.git-remembrall'
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install test dependencies.
+        run: pip3 install "ansible==6.2.0" "molecule[docker,lint]==3.5.2" "yamllint==1.26.0" "ansible-lint==6.4.0"
+
+      - name: run molecule tests
+        run: molecule test
+        working-directory: zerwes.git-remembrall
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          molecule_skip_rebuild_all: true
+  ansible-legacy:
+    name: legacy ansible version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: zerwes.git-remembrall
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install test dependencies.
+        run: pip3 install "ansible==2.9.27" "molecule[docker,lint]==3.2.3" "yamllint==1.24.2" "ansible-lint==4.2.0"
+
+      - name: run molecule tests
+        run: molecule test
+        working-directory: zerwes.git-remembrall
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          molecule_skip_rebuild_all: false
