@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: 'zerwes.git-remembrall'
+          path: 'zerwes.gitremembrall'
       - name: run ansible-lint
         uses: ansible/ansible-lint-action@v6.6.1
         with:

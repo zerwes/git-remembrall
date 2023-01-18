@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: 'zerwes.git-remembrall'
+          path: 'zerwes.gitremembrall'
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -24,7 +24,7 @@ jobs:
 
       - name: run molecule tests
         run: molecule test
-        working-directory: zerwes.git-remembrall
+        working-directory: zerwes.gitremembrall
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: 'zerwes.git-remembrall'
+          path: 'zerwes.gitremembrall'
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -47,7 +47,7 @@ jobs:
 
       - name: run molecule tests
         run: molecule test
-        working-directory: zerwes.git-remembrall
+        working-directory: zerwes.gitremembrall
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
@@ -58,7 +58,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: zerwes.git-remembrall
+          path: zerwes.gitremembrall
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -70,7 +70,7 @@ jobs:
 
       - name: run molecule tests
         run: molecule test
-        working-directory: zerwes.git-remembrall
+        working-directory: zerwes.gitremembrall
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'

@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: git-remembrall
+  role_name: gitremembrall
   namespace: zerwes
   author: Klaus Zerwes
   description: install a git repo report script
