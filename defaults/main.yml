@@ -1,0 +1,35 @@
+---
+
+#list of repos
+
+git_remembrall_repos: {}
+
+git_remembrall_default_thresholds:
+  - days: 20
+    commits: 20
+  - days: 14
+    commits: 40
+
+# example:
+# git_remembrall_repos:
+#   'git-remembrall':
+#     repo: 'https://github.com/zerwes/git-remembrall.git'
+#     dest: /var/tmp/git-remembrall
+#     clone: true # default
+#     update: true # default
+#     recursive: false # default
+#     mainbranchname: main # default
+#     ignorebranches:[] # list of branches to ignore
+#     gitmailformat: "%ae" # git format placeholder to get the mail for notifications %ae author email vs %ce commiter email
+#     relevantfiles: []  # list of relevant files to check commits on
+#     thresholds:
+#       - days: 20
+#         commits: 20
+#       - days: 14
+#         commits: 40
+
+git_remembrall_packages:
+  - git
+  - mailutils  # alternatives providing mailx: bsd-mailx, ...
+
+git_remembrall_script_path: /usr/local/bin/git_remembrall.sh
