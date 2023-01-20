@@ -3,4 +3,12 @@
 [![molecule test](https://github.com/zerwes/git-remembrall/actions/workflows/molecule.yml/badge.svg)](https://github.com/zerwes/git-remembrall/actions/workflows/molecule.yml)
 
 # git-remembrall
-notification script running on git repos as a ansible playbook
+notification script running on git repos deployed and configured via a ansible playbook ...
+
+## description
+In order to avoid git branches diverging to much from the *main* branch and/or to integrate changes made on the *main* branch on prominent files (test configurations, commit checks, submodules, ...) you can run a script on a checkout that will notify the author/commiter of the last commit on the branch in question by mail.
+
+Many parameters can be configured, as the script is implemented as a *jinja2* template:
+
+### configuration
+see: [defaults/main.yml](defaults/main.yml)
