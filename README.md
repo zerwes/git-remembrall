@@ -12,3 +12,6 @@ Many parameters can be configured, as the script is implemented as a *jinja2* te
 
 ### configuration
 see: [defaults/main.yml](defaults/main.yml)
+
+## tl;dr
+[blog post](https://zero-sys.net/ubloit/blog/git-remembrall)
