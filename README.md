@@ -8,7 +8,9 @@ notification script running on git repos deployed and configured via a ansible p
 ## description
 In order to avoid git branches diverging to much from the *main* branch and/or to enforce timely intergation of changes made on the *main* branch on prominent files (test configurations, commit checks, submodules, ...) you can run a script on a checkout that will notify the author/commiter of the last commit on the branch in question by mail.
 
-Many parameters can be configured, as the script is implemented as a *jinja2* template:
+Many parameters can be configured, as the script is implemented as a *jinja2* template.
+
+Branches can be excludes via configuration or by setting a tag named `$branch-archived` on the `HEAD` commit of the branch. (if the tag is **not** pointing to the `HEAD` the script assumes the branch is still in use and will ignore the tag!)
 
 ### configuration
 see: [defaults/main.yml](defaults/main.yml)

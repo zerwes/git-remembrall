@@ -20,6 +20,7 @@ for branch in $(git branch -r | sed '/origin\/HEAD/d'); do
     for ignorebranch in $MAINBRANCHNAME {{ repodata.ignorebranches | default([]) | join(' ') }}; do
         [ "$branch" = "origin/$ignorebranch" ] && continue 2
     done
+    [ -n "$(git tag --list --points-at remotes/${branch} $(basename ${branch})-archived 2>/dev/null)" ] && continue
     declare -i REPORT=0
     REPORTMSG=""
     AMAIL=$(git show --pretty=format:"{{ repodata.gitmailformat | default('%ae') }}" $branch | head -1)
