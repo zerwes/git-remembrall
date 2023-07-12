@@ -6,9 +6,27 @@ on:
   schedule:
     - cron: "10 5 * * 1"
 jobs:
-  ansible-latest:
-    name: latest ansible version
+  molecule:
+    name: ansible
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ansible:
+          - latest ansible
+          - pinned ansible
+          - legacy ansible
+        distro:
+          - debian11
+          - debian12
+        include:
+          - ansible: latest ansible
+            pip3deps: 'ansible molecule "molecule-plugins[docker]" yamllint ansible-lint "requests<2.29" "urllib3<2"'
+          - ansible: pinned ansible
+            pip3deps: '"ansible==7.4.0" "molecule[docker,lint]==3.5.2" "yamllint==1.26.0" "ansible-lint==6.4.0" "requests<2.29" "urllib3<2"'
+          - ansible: legacy ansible
+            pip3deps: '"ansible==2.9.27" "molecule[docker,lint]==3.2.3" "yamllint==1.24.2" "ansible-lint==4.2.0" "requests<2.29" "urllib3<2"'
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -20,7 +38,7 @@ jobs:
           python-version: 3.9
 
       - name: Install test dependencies.
-        run: pip3 install ansible molecule "molecule-plugins[docker]" yamllint ansible-lint "requests<2.29" "urllib3<2"
+        run: pip3 install ${{ matrix.pip3deps }}
 
       - name: run molecule tests
         run: molecule test
@@ -28,47 +46,4 @@ jobs:
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
-  ansible-pinned:
-    name: pinned ansible version
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          path: 'zerwes.gitremembrall'
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Install test dependencies.
-        run: pip3 install "ansible==6.2.0" "molecule[docker,lint]==3.5.2" "yamllint==1.26.0" "ansible-lint==6.4.0"
-
-      - name: run molecule tests
-        run: molecule test
-        working-directory: zerwes.gitremembrall
-        env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
-  ansible-legacy:
-    name: legacy ansible version
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          path: zerwes.gitremembrall
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Install test dependencies.
-        run: pip3 install "ansible==2.9.27" "molecule[docker,lint]==3.2.3" "yamllint==1.24.2" "ansible-lint==4.2.0"
-
-      - name: run molecule tests
-        run: molecule test
-        working-directory: zerwes.gitremembrall
-        env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_DISTRO: ${{ matrix.distro }}
