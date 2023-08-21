@@ -21,7 +21,7 @@ jobs:
           - debian12
         include:
           - ansible: latest
-            pip3deps: 'ansible molecule "molecule-plugins[docker]" docker yamllint ansible-lint "requests<2.29" "urllib3<2"'
+            pip3deps: 'ansible molecule "molecule-plugins[docker]" yamllint ansible-lint "requests<2.29" "urllib3<2"'
           - ansible: pinned
             pip3deps: '"ansible==7.4.0" "molecule[docker,lint]==3.5.2" "yamllint==1.26.0" "ansible-lint==6.4.0" "requests<2.29" "urllib3<2"'
           - ansible: legacy
