@@ -40,6 +40,10 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install ${{ matrix.pip3deps }}
 
+      - name: Install collections required on ansible latest
+        run: ansible-galaxy collection install community.docker
+        if: ${{ matrix.ansible == 'latest' }}
+
       - name: run molecule tests
         run: molecule test
         working-directory: zerwes.gitremembrall
