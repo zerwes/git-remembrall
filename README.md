@@ -1,2 +1,2 @@
 # git-remembrall
-notification script running on git repos as a ansible playbook
+notification script running on git repos deployed as a ansible playbook
