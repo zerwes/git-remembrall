@@ -11,3 +11,4 @@ skip_list:
   - git-latest
   - line-length
   - yaml[line-length]
+  - name[casing]
