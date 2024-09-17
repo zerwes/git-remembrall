@@ -26,7 +26,8 @@ for branch in $(git branch -r | sed '/origin\/HEAD/d'); do
     [ -z "$(git diff --stat  ${MAINBRANCHNAME}...${branch})" ] && continue
     declare -i REPORT=0
     REPORTMSG=""
-    AMAIL=$(git show --pretty=format:"{{ repodata.gitmailformat | default('%ae') }}" $branch | head -1)
+    # get the rcpt to notify: get the author of last commit exclusiv on the branch
+    AMAIL=$(git log --pretty=format:"{{ repodata.gitmailformat | default('%ae') }}" -1 ${MAINBRANCHNAME}..$branch)
     AMAIL=${AMAIL,,}
     CDATE=$(git show --pretty=format:"%cs" $branch | head -1)
     let DDIFF=($(date +%s -d $MAINDATE)-$(date +%s -d $CDATE))/86400
