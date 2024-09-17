@@ -22,6 +22,8 @@ for branch in $(git branch -r | sed '/origin\/HEAD/d'); do
     done
     # ignore branches tagged as archived
     [ -n "$(git tag --list --points-at remotes/${branch} $(basename ${branch})-archived 2>/dev/null)" ] && continue
+    # ignore branches that have no exclusive commits compared to main
+    [ -z "$(git diff --stat  ${MAINBRANCHNAME}...${branch})" ] && continue
     declare -i REPORT=0
     REPORTMSG=""
     AMAIL=$(git show --pretty=format:"{{ repodata.gitmailformat | default('%ae') }}" $branch | head -1)
