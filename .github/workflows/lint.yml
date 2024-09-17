@@ -16,4 +16,4 @@ jobs:
       - name: run ansible-lint
         uses: ansible/ansible-lint@v24.9.0
         with:
-          working_directory: zerwes.gitremembrall
+          path: '.'
