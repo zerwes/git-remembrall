@@ -21,21 +21,24 @@ jobs:
           - debian12
         include:
           - ansible: latest
-            pip3deps: 'ansible molecule "molecule-plugins[docker]" yamllint ansible-lint "requests<2.29" "urllib3<2"'
+            pip3deps: 'ansible molecule "molecule-plugins[docker]" yamllint ansible-lint "requests" "urllib3"'
+            pythonversion: 3.11
           - ansible: pinned
-            pip3deps: '"ansible==7.4.0" "molecule[docker,lint]==3.5.2" "yamllint==1.26.0" "ansible-lint==6.4.0" "requests<2.29" "urllib3<2"'
+            pip3deps: '"ansible==10.4.0" "molecule-plugins[docker]" "yamllint==1.35.1" "ansible-lint==24.9.0" "requests==2.31.0" "urllib3==2.2.2"'
+            pythonversion: 3.11
           - ansible: legacy
             pip3deps: '"ansible==2.9.27" "molecule[docker,lint]==3.2.3" "yamllint==1.24.2" "ansible-lint==4.2.0" "requests<2.29" "urllib3<2"'
+            pythonversion: 3.9
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           path: 'zerwes.gitremembrall'
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: ${{ matrix.pythonversion }}
 
       - name: Install test dependencies.
         run: pip3 install ${{ matrix.pip3deps }}

@@ -18,12 +18,12 @@
   ansible.builtin.template:
     src: git_remembrall.j2
     dest: "{{ git_remembrall_script_path }}"
-    mode: 0755
+    mode: '0755'
 
 - name: create cron job for git report script
   ansible.builtin.template:
     src: git_remembrall_cron.j2
     dest: /etc/cron.d/git-remembrall
-    mode: 0644
+    mode: '0644'
 
 ...
