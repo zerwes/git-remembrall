@@ -11,9 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: 'zerwes.gitremembrall'
       - name: run ansible-lint
-        uses: ansible/ansible-lint@v24.6.0
-        with:
-          path: '.'
+        uses: ansible/ansible-lint@v24.9.0
