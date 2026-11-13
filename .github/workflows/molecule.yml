@@ -35,6 +35,9 @@ jobs:
         with:
           path: 'zerwes.gitremembrall'
 
+      - name: lsb release
+        run: lsb_release -a
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
