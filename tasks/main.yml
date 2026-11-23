@@ -1,5 +1,10 @@
 ---
 
+- name: Run "apt-get update" as a separate step
+  ansible.builtin.apt:
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
 - name: install required packages
   ansible.builtin.package:
     name: "{{ git_remembrall_packages }}"
